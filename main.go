@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	//	"path"
 	"io"
@@ -87,9 +86,8 @@ func folderWalk(file string) (i int64) {
 		}
 		return nil
 	})
-	if err != nil {
-		printDebug("Error: %+v\n", err)
-	}
+	check(err)
+
 	return
 }
 
@@ -125,15 +123,11 @@ func moveable(file string) bool {
 
 func fileSize(path string) int64 {
 	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-		return -1
-	}
+	check(err)
+
 	fi, err := file.Stat()
-	if err != nil {
-		log.Fatal(err)
-		return -1
-	}
+	check(err)
+
 	file.Close()
 	return fi.Size()
 }
@@ -158,9 +152,7 @@ func move(file, destpath string) (ok bool) {
 
 	// Make target directory
 	err := os.Mkdir(filepath.Join(destpath, name), os.ModePerm)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	check(err)
 
 	target := filepath.Join(destpath, name, basename)
 
@@ -172,16 +164,10 @@ func move(file, destpath string) (ok bool) {
 	}
 
 	err = Copy(file, target)
-	if err != nil {
-		fmt.Println(err.Error())
-		return false
-	}
+	check(err)
 
 	err = os.Remove(file)
-	if err != nil {
-		fmt.Println(err.Error())
-		return false
-	}
+	check(err)
 
 	return true
 }
@@ -195,21 +181,18 @@ func check(e error) {
 
 func Copy(src, dst string) error {
 	in, err := os.Open(src)
-	if err != nil {
-		return err
-	}
+	check(err)
 	defer in.Close()
 
 	out, err := os.Create(dst)
-	if err != nil {
-		return err
-	}
+	check(err)
 	defer out.Close()
 
-	_, err = io.Copy(out, in)
-	if err != nil {
-		return err
-	}
+	s, err := io.Copy(out, in)
+	check(err)
+
+	fmt.Println(s, " bytes written.")
+
 	return out.Close()
 }
 
