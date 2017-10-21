@@ -176,6 +176,7 @@ func move(file, destpath string) (ok bool) {
 func check(e error) bool {
 	if e != nil {
 		fmt.Println(e.Error())
+		fmt.Println(e)
 		//panic(e)
 		return false
 	}
@@ -194,7 +195,7 @@ func Copy(src, dst string) error {
 	s, err := io.Copy(out, in)
 	check(err)
 
-	fmt.Println(s, " bytes written.")
+	fmt.Println(s, "bytes written.")
 
 	return out.Close()
 }
