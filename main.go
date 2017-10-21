@@ -175,6 +175,7 @@ func move(file, destpath string) (ok bool) {
 // Check err
 func check(e error) {
 	if e != nil {
+		fmt.Println(e.Error())
 		panic(e)
 	}
 }
