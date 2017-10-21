@@ -142,19 +142,11 @@ func move(file, destpath string) (ok bool) {
 	ok = true
 
 	destpath = strings.Replace(destpath, "\\", "/", -1)
-	fmt.Println(destpath)
-
-	//d := path.Dir(destpath)
-	//fmt.Println(d)
-
 	file = strings.Replace(file, "\\", "/", -1)
-	fmt.Println(file)
 
 	basename := filepath.Base(file)
-	fmt.Println(basename)
 
 	fp := filepath.Dir(file)
-	fmt.Println(fp)
 
 	name := filepath.Base(fp)
 	fmt.Println(name)
