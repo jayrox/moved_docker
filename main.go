@@ -167,17 +167,17 @@ func move(file, destpath string) (ok bool) {
 	check(err)
 
 	err = os.Remove(file)
-	check(err)
-
-	return true
+	return check(err)
 }
 
 // Check err
-func check(e error) {
+func check(e error) bool {
 	if e != nil {
 		fmt.Println(e.Error())
-		panic(e)
+		//panic(e)
+		return false
 	}
+	return true
 }
 
 func Copy(src, dst string) error {
