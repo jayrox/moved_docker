@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
+	//	"path"
 	"path/filepath"
 	"strings"
 	"time"
@@ -143,12 +143,12 @@ func move(file, destpath string) (ok bool) {
 	destpath = strings.Replace(destpath, "\\", "/", -1)
 	fmt.Println(destpath)
 
-	d := path.Dir(destpath)
-	fmt.Println(d)
+	//d := path.Dir(destpath)
+	//fmt.Println(d)
 
 	file = strings.Replace(file, "\\", "/", -1)
 	fmt.Println(file)
-	
+
 	basename := filepath.Base(file)
 	fmt.Println(basename)
 
@@ -157,19 +157,19 @@ func move(file, destpath string) (ok bool) {
 
 	name := filepath.Base(fp)
 	fmt.Println(name)
-	
+
 	// Prevents /Media/Movies/Movies/
-	if filepath.Base(d) == name {
+	if filepath.Base(destpath) == name {
 		name = ""
 	}
 
 	// Make target directory
-	err := os.Mkdir(filepath.Join(d, name), os.ModePerm)
+	err := os.Mkdir(filepath.Join(destpath, name), os.ModePerm)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
-	target := filepath.Join(d, name, basename)
+	target := filepath.Join(destpath, name, basename)
 
 	printDebug("Moving: %s\nDestination: %s\n", file, target)
 
