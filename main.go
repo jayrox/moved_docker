@@ -164,10 +164,12 @@ func move(file, destpath string) (ok bool) {
 	}
 
 	err = Copy(file, target)
-	check(err)
+	if check(err) {
+		err = os.Remove(file)
+		return check(err)
+	}
 
-	err = os.Remove(file)
-	return check(err)
+	return true
 }
 
 // Check err
