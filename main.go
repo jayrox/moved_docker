@@ -13,8 +13,8 @@ import (
 
 var (
 	flagdebug      = flag.Bool("d", true, "show debug output")
-	flagdir        = "/mnt/src"
-	flagtarget     = "/mnt/dst"
+	src            = "/mnt/src"
+	dst            = "/mnt/dst"
 	flagminsize    = flag.Int64("min", 200000000, "minimum file size to include in scan. default is 200MB") // 3MB
 	flagmovesample = flag.Bool("ms", false, "move sample files")
 	flagTest       = flag.Bool("test", false, "test move but don't actually move files.")
@@ -33,26 +33,12 @@ func main() {
 	rf.Min = flagInt(flagminsize)
 
 	// Root folder to scan
-	fpSAbs, _ := filepath.Abs(flagString(flagdir))
+	fpSAbs, _ := filepath.Abs(src)
 	rf.Dir = fpSAbs
-	if flagString(flagdir) == "cwd" {
-		dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-		if err != nil {
-			log.Fatal(err)
-		}
-		rf.Dir = dir
-	}
 
 	// Root folder to move to
-	fpTAbs, _ := filepath.Abs(flagString(flagtarget))
+	fpTAbs, _ := filepath.Abs(dst)
 	rf.Target = fpTAbs
-	if flagString(flagtarget) == "cwd" {
-		dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-		if err != nil {
-			log.Fatal(err)
-		}
-		rf.Target = dir
-	}
 
 	fmt.Printf("Scanning directory: %s\n", rf.Dir)
 	fmt.Println("_____________________")
