@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	//	"path"
+	"io"
 	"path/filepath"
 	"strings"
 	"time"
@@ -178,11 +179,18 @@ func move(file, destpath string) (ok bool) {
 		return true
 	}
 
-	err = os.Rename(file, target)
+	err = Copy(file, target)
 	if err != nil {
 		fmt.Println(err.Error())
 		return false
 	}
+
+	err = os.Remove(file)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false
+	}
+
 	return true
 }
 
@@ -191,6 +199,26 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+func Copy(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+
+	out, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	_, err = io.Copy(out, in)
+	if err != nil {
+		return err
+	}
+	return out.Close()
 }
 
 // Only print debug output if the debug flag is true
