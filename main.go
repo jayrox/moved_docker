@@ -7,6 +7,7 @@ import (
 	"os"
 	//	"path"
 	"io"
+	"log"
 	"path/filepath"
 	"strings"
 	"time"
@@ -192,9 +193,6 @@ func check(e error) bool {
 	return true
 }
 
-// CopyFile copies a file from src to dst. If src and dst files exist, and are
-// the same, then return success. Otherise, attempt to create a hard link
-// between the two files. If that fail, copy the file contents from src to dst.
 func CopyFile(src, dst string) (err error) {
 	// open input file
 	fi, err := os.Open(src)
@@ -207,6 +205,13 @@ func CopyFile(src, dst string) (err error) {
 			panic(err)
 		}
 	}()
+
+	fis, err := fi.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(fis.Size())
+
 	// make a read buffer
 	r := bufio.NewReader(fi)
 
