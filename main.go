@@ -174,11 +174,11 @@ func move(file, destpath string) (ok bool) {
 	}
 	fmt.Printf("CopyFile succeeded\n")
 
-	err = os.Remove(file)
-	if err != nil {
-		fmt.Printf("Remove failed %q\n", err)
-		return false
-	}
+	//err = os.Remove(file)
+	//if err != nil {
+	//	fmt.Printf("Remove failed %q\n", err)
+	//	return false
+	//}
 	fmt.Printf("Remove succeeded\n")
 
 	return true
@@ -236,7 +236,9 @@ func CopyFile(src, dst string) (err error) {
 	buf := make([]byte, 1024)
 	for {
 		i = i + 1024
-		fmt.Println(i)
+		if i%5 == 0 {
+			fmt.Println(i)
+		}
 		// read a chunk
 		n, err := r.Read(buf)
 		if err != nil && err != io.EOF {
