@@ -232,13 +232,13 @@ func CopyFile(src, dst string) (err error) {
 	w := bufio.NewWriter(fo)
 
 	// make a buffer to keep chunks that are read
-	i := 0
+	//i := 0
 	buf := make([]byte, 1024)
 	for {
-		i = i + 1024
-		if i%5 == 0 {
-			fmt.Println(i)
-		}
+		//i = i + 1024
+		//if i%5 == 0 {
+		//	fmt.Println(i)
+		//}
 		// read a chunk
 		n, err := r.Read(buf)
 		if err != nil && err != io.EOF {
