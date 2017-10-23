@@ -7,7 +7,7 @@ import (
 	"os"
 	//	"path"
 	"io"
-	"log"
+	//"log"
 	"path/filepath"
 	"strings"
 	"time"
@@ -199,18 +199,18 @@ func CopyFile(src, dst string) (err error) {
 	// open input file
 	fi, err := os.Open(src)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	// close fi on exit and check for its returned error
 	defer func() {
 		if err := fi.Close(); err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
 	}()
 
 	fis, err := fi.Stat()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
 	}
 	fmt.Println(fis.Size())
 
@@ -220,12 +220,12 @@ func CopyFile(src, dst string) (err error) {
 	// open output file
 	fo, err := os.Create(dst)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	// close fo on exit and check for its returned error
 	defer func() {
 		if err := fo.Close(); err != nil {
-			log.Fatal(err)
+			fmt.Println(err)
 		}
 	}()
 	// make a write buffer
@@ -242,7 +242,7 @@ func CopyFile(src, dst string) (err error) {
 		// read a chunk
 		n, err := r.Read(buf)
 		if err != nil && err != io.EOF {
-			panic(err)
+			fmt.Println(err)
 		}
 		if n == 0 {
 			break
@@ -250,7 +250,7 @@ func CopyFile(src, dst string) (err error) {
 
 		// write a chunk
 		if _, err := w.Write(buf[:n]); err != nil {
-			panic(err)
+			fmt.Println(err)
 		}
 	}
 
