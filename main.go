@@ -154,7 +154,9 @@ func move(file, destpath string) (ok bool) {
 
 	// Make target directory
 	err := os.Mkdir(filepath.Join(destpath, name), os.ModePerm)
-	check(err)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	target := filepath.Join(destpath, name, basename)
 
@@ -223,7 +225,7 @@ func CopyFile(src, dst string) (err error) {
 	// close fo on exit and check for its returned error
 	defer func() {
 		if err := fo.Close(); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}()
 	// make a write buffer
