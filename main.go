@@ -250,7 +250,7 @@ func CopyFile(src, dst string) (err error) {
 	}
 
 	if err = w.Flush(); err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	return err
 }
