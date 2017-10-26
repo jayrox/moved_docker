@@ -1,12 +1,12 @@
 package main
 
 import (
-	"bufio"
+	//"bufio"
 	"flag"
 	"fmt"
 	"os"
 	//	"path"
-	"io"
+	//"io"
 	//"log"
 	"path/filepath"
 	"strings"
@@ -167,9 +167,9 @@ func move(file, destpath string) (ok bool) {
 		return true
 	}
 
-	err = CopyFile(file, target)
+	err = os.Rename(file, target)
 	if err != nil {
-		fmt.Printf("CopyFile failed %q\n", err)
+		fmt.Println(err.Error())
 		return false
 	}
 	fmt.Printf("CopyFile succeeded\n")
@@ -193,71 +193,6 @@ func check(e error) bool {
 		return false
 	}
 	return true
-}
-
-func CopyFile(src, dst string) (err error) {
-	// open input file
-	fi, err := os.Open(src)
-	if err != nil {
-		fmt.Println(err)
-	}
-	// close fi on exit and check for its returned error
-	defer func() {
-		if err := fi.Close(); err != nil {
-			fmt.Println(err)
-		}
-	}()
-
-	fis, err := fi.Stat()
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(fis.Size())
-
-	// make a read buffer
-	r := bufio.NewReader(fi)
-
-	// open output file
-	fo, err := os.Create(dst)
-	if err != nil {
-		fmt.Println(err)
-	}
-	// close fo on exit and check for its returned error
-	defer func() {
-		if err := fo.Close(); err != nil {
-			fmt.Println(err)
-		}
-	}()
-	// make a write buffer
-	w := bufio.NewWriter(fo)
-
-	// make a buffer to keep chunks that are read
-	//i := 0
-	buf := make([]byte, 1024)
-	for {
-		//i = i + 1024
-		//if i%5 == 0 {
-		//	fmt.Println(i)
-		//}
-		// read a chunk
-		n, err := r.Read(buf)
-		if err != nil && err != io.EOF {
-			fmt.Println(err)
-		}
-		if n == 0 {
-			break
-		}
-
-		// write a chunk
-		if _, err := w.Write(buf[:n]); err != nil {
-			fmt.Println(err)
-		}
-	}
-
-	if err = w.Flush(); err != nil {
-		fmt.Println(err)
-	}
-	return err
 }
 
 // Only print debug output if the debug flag is true
