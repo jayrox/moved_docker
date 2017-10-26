@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 	//	"path"
-	//"io"
+	"io"
 	//"log"
 	"path/filepath"
 	"strings"
@@ -166,7 +166,8 @@ func move(file, destpath string) (ok bool) {
 		return true
 	}
 
-	err = os.Rename(file, target)
+	//err = os.Rename(file, target)
+	err = copyFileContents(file, target)
 	if err != nil {
 		fmt.Println(err.Error())
 		return false
@@ -181,6 +182,29 @@ func move(file, destpath string) (ok bool) {
 	fmt.Printf("Remove succeeded\n")
 
 	return true
+}
+
+func copyFileContents(src, dst string) (err error) {
+	in, err := os.Open(src)
+	if err != nil {
+		return
+	}
+	defer in.Close()
+	out, err := os.Create(dst)
+	if err != nil {
+		return
+	}
+	defer func() {
+		cerr := out.Close()
+		if err == nil {
+			err = cerr
+		}
+	}()
+	if _, err = io.Copy(out, in); err != nil {
+		return
+	}
+	err = out.Sync()
+	return
 }
 
 // Check err
