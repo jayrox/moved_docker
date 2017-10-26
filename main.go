@@ -146,9 +146,10 @@ func move(file, destpath string) (ok bool) {
 
 	name := filepath.Base(fp)
 	fmt.Println(name)
+	fmt.Println(filepath.Base(destpath))
 
 	// Prevents /Media/Movies/Movies/
-	if "src" == name {
+	if filepath.Base(destpath) == name {
 		name = ""
 	}
 
