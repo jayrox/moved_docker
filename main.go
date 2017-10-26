@@ -1,13 +1,10 @@
 package main
 
 import (
-	//"bufio"
 	"flag"
 	"fmt"
-	"os"
-	//	"path"
 	"io"
-	//"log"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -166,7 +163,6 @@ func move(file, destpath string) (ok bool) {
 		return true
 	}
 
-	//err = os.Rename(file, target)
 	err = copyFileContents(file, target)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -174,11 +170,11 @@ func move(file, destpath string) (ok bool) {
 	}
 	fmt.Printf("CopyFile succeeded\n")
 
-	//err = os.Remove(file)
-	//if err != nil {
-	//	fmt.Printf("Remove failed %q\n", err)
-	//	return false
-	//}
+	err = os.Remove(file)
+	if err != nil {
+		fmt.Printf("Remove failed %q\n", err)
+		return false
+	}
 	fmt.Printf("Remove succeeded\n")
 
 	return true
